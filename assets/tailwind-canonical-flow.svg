@@ -1,0 +1,46 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">tailwind-canonical flow</title>
+  <desc id="desc">Flow diagram showing Tailwind edit, validation, fix, and recheck loop.</desc>
+  <rect width="1200" height="630" rx="32" fill="#0B1020"/>
+  <rect x="48" y="48" width="1104" height="534" rx="24" fill="#11182C" stroke="#1F2A44"/>
+  <text x="72" y="112" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="42" font-weight="700">tailwind-canonical</text>
+  <text x="72" y="152" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="22">Live Tailwind validation for agent-written UI code</text>
+
+  <rect x="72" y="220" width="228" height="180" rx="20" fill="#16213A" stroke="#334155"/>
+  <text x="102" y="274" fill="#67E8F9" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">1. Tailwind edit</text>
+  <text x="102" y="316" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Agent changes component,</text>
+  <text x="102" y="344" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">page, or Tailwind CSS</text>
+  <text x="102" y="372" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">file with real class</text>
+  <text x="102" y="400" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">signals only</text>
+
+  <rect x="336" y="220" width="228" height="180" rx="20" fill="#16213A" stroke="#334155"/>
+  <text x="366" y="274" fill="#67E8F9" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">2. Validate</text>
+  <text x="366" y="316" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Helper detects npm,</text>
+  <text x="366" y="344" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">pnpm, or bun, then</text>
+  <text x="366" y="372" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">runs Tailwind language</text>
+  <text x="366" y="400" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">server on touched files</text>
+
+  <rect x="600" y="220" width="228" height="180" rx="20" fill="#16213A" stroke="#334155"/>
+  <text x="630" y="274" fill="#67E8F9" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">3. Fix only truth</text>
+  <text x="630" y="316" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Apply only confirmed</text>
+  <text x="630" y="344" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Tailwind diagnostics</text>
+  <text x="630" y="372" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">like canonical-class</text>
+  <text x="630" y="400" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">warnings</text>
+
+  <rect x="864" y="220" width="228" height="180" rx="20" fill="#16213A" stroke="#334155"/>
+  <text x="894" y="274" fill="#67E8F9" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">4. Recheck</text>
+  <text x="894" y="316" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Run one final pass.</text>
+  <text x="894" y="344" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Clean run stays quiet.</text>
+  <text x="894" y="372" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">Validation fail closes</text>
+  <text x="894" y="400" fill="#E2E8F0" font-family="Arial, Helvetica, sans-serif" font-size="18">without guessing.</text>
+
+  <path d="M300 310H336" stroke="#38BDF8" stroke-width="6" stroke-linecap="round"/>
+  <path d="M564 310H600" stroke="#38BDF8" stroke-width="6" stroke-linecap="round"/>
+  <path d="M828 310H864" stroke="#38BDF8" stroke-width="6" stroke-linecap="round"/>
+  <path d="M328 310L314 298V322L328 310Z" fill="#38BDF8" transform="translate(8 0)"/>
+  <path d="M592 310L578 298V322L592 310Z" fill="#38BDF8" transform="translate(8 0)"/>
+  <path d="M856 310L842 298V322L856 310Z" fill="#38BDF8" transform="translate(8 0)"/>
+
+  <rect x="72" y="462" width="1020" height="72" rx="16" fill="#0F172A" stroke="#1E293B"/>
+  <text x="104" y="507" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">Why low-noise:</text>
+  <text x="284" y="507" fill="#CBD5E1" font-family="Arial, Helvetica, sans-serif" font-size="22">touched files only, live Tailwind diagnostics only, no docs-only rewrites, silent success path</text>

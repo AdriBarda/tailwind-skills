@@ -1,91 +1,95 @@
 ---
 name: tailwind-canonical
 description: >
-  Use this skill on every task that touches a file containing Tailwind CSS classes.
-  Fixes IntelliSense warnings by rewriting `utility-[var(--token)]` to the canonical
-  v4 form `utility-(--token)`. Activates automatically when editing class or className
-  strings in any frontend file (.tsx, .jsx, .vue, .svelte, .astro, .html).
+  Activate only for Tailwind CSS work. After editing Tailwind-bearing files,
+  validate touched files with Tailwind language server and fix only confirmed
+  canonical-class diagnostics. Use explicit scan mode for repo audits.
 metadata:
-  version: 0.1.0
-license: MIT
+  version: 0.3.0
+  license: MIT
 ---
 
 # Tailwind Canonical
 
-## What this skill does
+## Goal
 
-Apply frontend styling changes while keeping Tailwind output canonical, compact, and consistent with local project conventions.
+Keep Tailwind output IntelliSense-clean with live Tailwind diagnostics, not
+guesses.
 
-## When to use
+## Trigger
 
-Use this skill when:
+Activate only when current task involves Tailwind CSS.
 
-- editing Tailwind class strings in any frontend framework (React, Vue, Svelte, Astro, HTML, etc.)
-- refactoring UI code that uses Tailwind CSS
-- fixing Tailwind IntelliSense warnings
-- converting arbitrary values into clearer canonical forms
-- cleaning up inconsistent token usage
+Strong signals:
 
-Do not use this skill when:
+- user mentions `tailwind`, utility classes, responsive variants, `@theme`, `@apply`, or UI styling
+- touched file contains `class=`, `className=`, `tw`, `clsx`, `cn`, `cva`
+- touched file contains `@import "tailwindcss"`, `@theme`, `@apply`, `@utility`, `@variant`
 
-- the task is backend-only
-- the file does not use Tailwind
-- the request is unrelated to styling or class changes
+Do not activate for backend-only work or non-Tailwind files.
 
-## Inputs needed
+## Modes
 
-- the file or code snippet being changed
-- nearby template or component patterns if available
-- any project-specific token conventions already present in the file or repo
+### Guard mode
 
-## Tailwind version
+Default mode for normal edit tasks.
 
-These conventions target **Tailwind CSS v4**. v4 introduces custom-property shorthand syntax using parentheses. This is valid and canonical — do not rewrite it.
+1. Make requested change first.
+2. Track only touched Tailwind-bearing files.
+3. Run bundled helper on touched files only:
 
-| v4 canonical (correct)       | v3 form (do not use)                      |
-| ---------------------------- | ----------------------------------------- |
-| `text-(--token)`             | `text-[--token]` or `text-[var(--token)]` |
-| `bg-(--token)`               | `bg-[var(--token)]`                       |
-| `font-(family-name:--token)` | `font-[family:var(--token)]`              |
+   ```
+   node skills/tailwind-canonical/bin/tailwind-diagnostics.mjs --workspace <repo-root> --file <relative-path> --code suggestCanonicalClasses
+   ```
 
-If you see `utility-(--token)` or `utility-(modifier:--token)`, that is **correct v4 syntax**. Never rewrite parenthesis form to bracket form.
+4. Fix only diagnostics returned by helper.
+5. Re-run helper once.
+6. If clean, say nothing about Tailwind review unless user asked.
 
-## Procedure
+### Scan mode
 
-0. **Only change what has a documented warning or was explicitly requested. Do not normalize, improve, or touch classes that are already valid.**
-1. Make the requested UI change without changing behavior unless explicitly asked.
-2. Prefer standard documented Tailwind utilities over arbitrary values.
-3. Reuse existing project tokens and surrounding class conventions.
-4. If a CSS custom property can be expressed with Tailwind v4 custom-property shorthand `utility-(--token)`, prefer that over bracket syntax.
-5. Avoid invented utilities.
-6. Avoid duplicate or conflicting utilities unless a deliberate override is clearly needed.
-7. Keep class lists readable and consistent with nearby code.
+Use only when user explicitly asks to scan, audit, or review existing Tailwind
+issues.
 
-For rewrite examples and normalization patterns, see [references/conventions.md](references/conventions.md).
+1. Discover likely Tailwind files by extension and Tailwind signals.
+2. Run helper on discovered files.
+3. Report compact findings grouped by file, then code/count.
+4. Only fix findings if user explicitly asked.
 
-## Validation
+## Validation source
 
-Before returning:
+Use live Tailwind diagnostics only. Bundled helper detects project package
+manager, launches Tailwind language server via transient runner, and returns
+compact JSON diagnostics.
 
-- check for invalid Tailwind classes
-- check for non-canonical syntax
-- check for unnecessary arbitrary values
-- check for conflicting utilities
-- check whether any remaining arbitrary value is justified
-- **do NOT rewrite `utility-(--token)` to `utility-[--token]`** — parenthesis form is canonical in Tailwind v4
+Runner order:
+
+1. `packageManager` in `package.json`
+2. lockfile fallback
+3. matching command:
+   - `pnpm dlx @tailwindcss/language-server --stdio`
+   - `npx -y @tailwindcss/language-server --stdio`
+   - `bunx @tailwindcss/language-server --stdio`
+
+## Scope
+
+Hot path stays narrow.
+
+- Guard mode: touched files only
+- v1 fixes: `suggestCanonicalClasses` only
+- max loop: validate, fix, final validate
+- no repo-wide scan unless user asked
+
+## Failure policy
+
+Fail closed.
+
+- If helper or language server unavailable, do not guess canonical rewrites.
+- If warning is ambiguous, leave code as-is and report exact diagnostic.
+- Never expand fix scope beyond touched files in guard mode unless user asks.
 
 ## Output
 
-1. Return the final code first.
-2. Then add a short section named `Tailwind review`.
-3. Keep the review to at most 3 bullets.
-4. Mention only:
-   - syntax you normalized
-   - arbitrary values intentionally kept
-   - assumptions that depend on local project config
-
-## Failure modes
-
-- If the project clearly uses a local convention that differs from the general canonical form, preserve the project convention and mention it in `Tailwind review`.
-- If there is no documented utility or token that fits, keep the arbitrary value and explain why briefly.
-- **Never add classes that did not exist in the original.** If a class appears to be missing, ask — do not invent a replacement.
+- Guard mode success: silent
+- Guard mode failure: one short blocker line
+- Scan mode: compact findings only

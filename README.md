@@ -1,53 +1,157 @@
-# tailwind-agent-skills
+# tailwind-canonical
 
-Minimal agent skills package for canonical Tailwind cleanup with Tailwind CSS v4-oriented conventions.
+Repository name: `tailwind-agent-skills`.
+Published skill name: `tailwind-canonical`.
 
-Useful when an agent generates valid-but-non-canonical Tailwind classes that later trigger IntelliSense suggestions or inconsistent class syntax.
+Agent skill for Tailwind CSS v4 projects. It keeps class strings canonical by
+checking them against live Tailwind diagnostics instead of guessing from docs or
+model memory.
 
-## Included skill
+Good fit when you want agent to:
 
-- `tailwind-canonical` — normalizes Tailwind classes to canonical IntelliSense-friendly forms and reduces unnecessary arbitrary values.
+- create new Tailwind components without leaving IntelliSense warnings behind
+- clean up existing projects with canonical-class issues
+- stay quiet on success and only act when Tailwind server confirms problem
 
-## What it helps with
+![tailwind-canonical flow](./assets/tailwind-canonical-flow.svg)
 
-- rewriting `utility-[var(--token)]` to canonical v4 `utility-(--token)` syntax
-- reducing unnecessary arbitrary values when a documented utility already exists
-- keeping Tailwind class strings more consistent during frontend edits
-- cleaning up IntelliSense warnings related to non-canonical class forms
+## Why this exists
 
-## Scope
+Agents often generate valid Tailwind that is still non-canonical, like:
 
-- intended for projects using Tailwind CSS classes in frontend templates or components
-- especially useful when an agent is editing `class` or `className` strings
-- conventions are written around Tailwind CSS v4 syntax
+```txt
+rounded-[2rem] -> rounded-4xl
+max-h-[34rem] -> max-h-136
+```
+
+Those are not build errors, but they do show up as Tailwind IntelliSense
+warnings. This skill uses Tailwind language server directly so fixes are based
+on same diagnostic source, not hand-written rewrite heuristics.
+
+## What it does
+
+- auto-activates only for Tailwind-related work
+- validates touched Tailwind files after edits
+- fixes only confirmed `suggestCanonicalClasses` diagnostics
+- stays silent on clean edit runs
+- supports explicit repo-wide scan mode for audits
+- fails closed if live Tailwind validation is unavailable
+
+## How it works
+
+Skill bundles helper script at:
+
+```txt
+skills/tailwind-canonical/bin/tailwind-diagnostics.mjs
+```
+
+Helper does three things:
+
+1. detect repo package manager from `package.json` or lockfile
+2. launch Tailwind language server with matching transient runner
+3. return compact JSON diagnostics for target files
+
+Transient command used:
+
+- `pnpm --package=@tailwindcss/language-server dlx tailwindcss-language-server --stdio`
+- `npx -y --package @tailwindcss/language-server tailwindcss-language-server --stdio`
+- `bunx --package @tailwindcss/language-server tailwindcss-language-server --stdio`
+
+No permanent dependency install required. First run may need network if package
+is not cached.
+
+## Modes
+
+### Guard mode
+
+Default mode. Runs after agent edits Tailwind-bearing files.
+
+- scope: touched files only
+- fix target: `suggestCanonicalClasses`
+- loop: validate, fix, final validate
+- success output: silent by default
+
+### Scan mode
+
+Used only when user explicitly asks to scan or audit existing Tailwind issues.
+
+- discovers likely Tailwind files
+- returns findings grouped by file
+- fixes only if user explicitly asks
+
+## Trigger
+
+Skill should activate only when task clearly involves Tailwind CSS.
+
+Typical signals:
+
+- `class=` or `className=`
+- `tw`, `clsx`, `cn`, `cva`
+- `@import "tailwindcss"`
+- `@theme`, `@apply`, `@utility`, `@variant`
+- explicit Tailwind or UI styling requests
+
+## Install
+
+Local install recommended first.
+
+```bash
+# current project
+npx skills add . --skill tailwind-canonical
+
+# global
+npx skills add . --skill tailwind-canonical -g
+```
+
+## Usage
+
+Normal Tailwind edit flow should not need manual invocation.
+
+Examples:
+
+```txt
+Build team builder card with Tailwind.
+```
+
+```txt
+Fix Tailwind canonical warnings in app/team/_components/TeamBuilderClient.tsx.
+```
+
+```txt
+Use tailwind-canonical skill to scan this project for Tailwind canonical-class warnings.
+```
+
+## Behavior guarantees
+
+- no docs-only rewrite guesses
+- no repo-wide scan during normal edits
+- no fix outside touched files in guard mode unless user asks
+- no canonical rewrite if Tailwind language server cannot validate
+
+## Requirements
+
+- Tailwind project
+- Node.js runtime
+- repo package manager available: `npm`, `pnpm`, or `bun`
+- network on first helper run if Tailwind language server is not cached
+
+## License
+
+MIT. See [LICENSE](./LICENSE).
 
 ## Limits
 
-- assumes Tailwind CSS v4 conventions
-- may preserve arbitrary values when no clear canonical rewrite exists
-- does not validate custom theme tokens or plugin utilities unless they are evident in the target repo
+- current auto-fix scope is intentionally narrow: `suggestCanonicalClasses`
+- scan mode reports findings first; it does not auto-fix unless requested
+- behavior depends on Tailwind language server being able to analyze project
 
-## Example rewrites
+## Structure
 
 ```txt
-text-[var(--color-ink)] -> text-(--color-ink)
-bg-[var(--color-surface)] -> bg-(--color-surface)
-rounded-[2rem] -> rounded-4xl
+skills/tailwind-canonical/
+├── SKILL.md
+├── assets/
+│   └── tailwind-canonical-flow.svg
+└── bin/
+    └── tailwind-diagnostics.mjs
 ```
-
-## Install with pnpm
-
-```bash
-pnpm dlx skills add . --skill tailwind-canonical
-```
-
-## Install from git
-
-```bash
-pnpm dlx skills add <repo-url> --skill tailwind-canonical
-```
-
-## Notes
-
-- this repo currently contains one skill: `tailwind-canonical`
-- the skill also includes a reference file with rewrite patterns in `skills/tailwind-canonical/references/conventions.md`
