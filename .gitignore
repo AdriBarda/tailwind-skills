@@ -1,5 +1,4 @@
 .DS_Store
-test-fixtures/
-tailwind-intellisense-fixer-workspace/
 .claude/
-evals/
+testing/
+AGENTS.md
