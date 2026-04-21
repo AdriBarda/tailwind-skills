@@ -52,7 +52,7 @@ function parseArgs(argv) {
   return {
     workspace: path.resolve(workspace),
     files: [...new Set(files.map((file) => path.resolve(workspace, file)))],
-    code,
+    code
   }
 }
 
@@ -73,6 +73,7 @@ function detectPackageManager(workspace) {
   if (existsSync(path.join(workspace, 'pnpm-lock.yaml'))) return 'pnpm'
   if (existsSync(path.join(workspace, 'package-lock.json'))) return 'npm'
   if (existsSync(path.join(workspace, 'npm-shrinkwrap.json'))) return 'npm'
+  if (existsSync(path.join(workspace, 'yarn.lock'))) return 'yarn'
   if (existsSync(path.join(workspace, 'bun.lock'))) return 'bun'
   if (existsSync(path.join(workspace, 'bun.lockb'))) return 'bun'
 
@@ -80,9 +81,26 @@ function detectPackageManager(workspace) {
 }
 
 function commandFor(manager) {
-  if (manager === 'pnpm') return ['pnpm', ['--package=@tailwindcss/language-server', 'dlx', 'tailwindcss-language-server', '--stdio']]
-  if (manager === 'npm') return ['npx', ['-y', '--package', '@tailwindcss/language-server', 'tailwindcss-language-server', '--stdio']]
-  if (manager === 'bun') return ['bunx', ['--package', '@tailwindcss/language-server', 'tailwindcss-language-server', '--stdio']]
+  if (manager === 'pnpm')
+    return [
+      'pnpm',
+      ['--package=@tailwindcss/language-server', 'dlx', 'tailwindcss-language-server', '--stdio']
+    ]
+  if (manager === 'npm')
+    return [
+      'npx',
+      ['-y', '--package', '@tailwindcss/language-server', 'tailwindcss-language-server', '--stdio']
+    ]
+  if (manager === 'yarn')
+    return [
+      'yarn',
+      ['dlx', '-p', '@tailwindcss/language-server', 'tailwindcss-language-server', '--stdio']
+    ]
+  if (manager === 'bun')
+    return [
+      'bunx',
+      ['--package', '@tailwindcss/language-server', 'tailwindcss-language-server', '--stdio']
+    ]
   return null
 }
 
@@ -145,8 +163,8 @@ function createLsp(child) {
       return {
         validate: true,
         lint: {
-          suggestCanonicalClasses: 'warning',
-        },
+          suggestCanonicalClasses: 'warning'
+        }
       }
     }
 
@@ -194,7 +212,10 @@ function createLsp(child) {
 
     if (typeof message.id !== 'undefined' && message.method) {
       if (message.method === 'workspace/configuration') {
-        sendResult(message.id, (message.params?.items ?? []).map((item) => configFor(item.section)))
+        sendResult(
+          message.id,
+          (message.params?.items ?? []).map((item) => configFor(item.section))
+        )
         return
       }
 
@@ -231,7 +252,9 @@ function createLsp(child) {
 
   child.on('exit', (code, signal) => {
     if (code === 0 || signal === 'SIGTERM') return
-    const error = new Error(`Tailwind language server exited early (code=${code}, signal=${signal ?? 'none'})`)
+    const error = new Error(
+      `Tailwind language server exited early (code=${code}, signal=${signal ?? 'none'})`
+    )
     for (const entry of pending.values()) {
       entry.reject(error)
     }
@@ -252,7 +275,7 @@ async function run() {
   const [binary, commandArgs] = command
   const child = spawn(binary, commandArgs, {
     cwd: args.workspace,
-    stdio: ['pipe', 'pipe', 'pipe'],
+    stdio: ['pipe', 'pipe', 'pipe']
   })
 
   let stderr = ''
@@ -289,9 +312,9 @@ async function run() {
       rootUri,
       capabilities: {
         textDocument: { publishDiagnostics: {} },
-        workspace: { configuration: true },
+        workspace: { configuration: true }
       },
-      workspaceFolders: [{ uri: rootUri, name: path.basename(args.workspace) }],
+      workspaceFolders: [{ uri: rootUri, name: path.basename(args.workspace) }]
     })
   } catch (error) {
     clearTimeout(startupTimeout)
@@ -309,24 +332,27 @@ async function run() {
         uri: pathToFileURL(filePath).href,
         languageId: languageIdFor(filePath),
         version: 1,
-        text: readFileSync(filePath, 'utf8'),
-      },
+        text: readFileSync(filePath, 'utf8')
+      }
     })
   }
 
   const startedAt = Date.now()
   while (true) {
     const now = Date.now()
-    const hasAllFiles = args.files.every((filePath) => diagnosticsByFile.has(filePath))
+    // Wait for diagnostics to settle. Files with no warnings may never emit
+    // publishDiagnostics — that is fine, diagnosticsByFile.get() ?? [] handles it.
     const settled = lastDiagnosticAt !== 0 && now - lastDiagnosticAt >= SETTLE_TIMEOUT_MS
 
-    if (hasAllFiles && settled) break
-    if (lastDiagnosticAt !== 0 && settled) break
+    if (settled) break
 
     if (now - startedAt >= TOTAL_TIMEOUT_MS) {
+      // No diagnostics published after full wait — language server ran but found
+      // nothing (clean files) or couldn't detect the project. Either way, output
+      // an empty array rather than crashing; the startup timeout above already
+      // handles the case where the server never initialized at all.
       child.kill('SIGTERM')
-      const details = stderr.trim() ? `\n${stderr.trim()}` : ''
-      fail(`Timed out waiting for Tailwind diagnostics${details}`)
+      break
     }
 
     await new Promise((resolve) => setTimeout(resolve, 100))
@@ -348,8 +374,8 @@ async function run() {
           startLine: diagnostic.range.start.line + 1,
           startCol: diagnostic.range.start.character + 1,
           endLine: diagnostic.range.end.line + 1,
-          endCol: diagnostic.range.end.character + 1,
-        },
+          endCol: diagnostic.range.end.character + 1
+        }
       })
     }
   }

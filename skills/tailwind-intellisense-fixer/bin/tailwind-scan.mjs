@@ -5,8 +5,36 @@ import { readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-const SEARCH_EXTENSIONS = new Set(['.js', '.cjs', '.mjs', '.jsx', '.ts', '.cts', '.mts', '.tsx', '.html', '.vue', '.svelte', '.astro', '.css'])
-const SEARCH_GLOBS = ['*.js', '*.cjs', '*.mjs', '*.jsx', '*.ts', '*.cts', '*.mts', '*.tsx', '*.html', '*.vue', '*.svelte', '*.astro', '*.css']
+const SEARCH_EXTENSIONS = new Set([
+  '.js',
+  '.cjs',
+  '.mjs',
+  '.jsx',
+  '.ts',
+  '.cts',
+  '.mts',
+  '.tsx',
+  '.html',
+  '.vue',
+  '.svelte',
+  '.astro',
+  '.css'
+])
+const SEARCH_GLOBS = [
+  '*.js',
+  '*.cjs',
+  '*.mjs',
+  '*.jsx',
+  '*.ts',
+  '*.cts',
+  '*.mts',
+  '*.tsx',
+  '*.html',
+  '*.vue',
+  '*.svelte',
+  '*.astro',
+  '*.css'
+]
 const SEARCH_PATTERNS = [
   'className=',
   'class=',
@@ -19,10 +47,20 @@ const SEARCH_PATTERNS = [
   '@theme',
   '@utility',
   '@variant',
-  '@import\\s+["\']tailwindcss["\']',
+  '@import\\s+["\']tailwindcss["\']'
 ]
-const SEARCH_REGEX = /className=|class=|clsx\(|cn\(|cva\(|tw`|tw\(|@apply|@theme|@utility|@variant|@import\s+["']tailwindcss["']/
-const SKIP_DIRS = new Set(['.git', 'node_modules', '.next', '.nuxt', '.svelte-kit', 'dist', 'build', 'coverage'])
+const SEARCH_REGEX =
+  /className=|class=|clsx\(|cn\(|cva\(|tw`|tw\(|@apply|@theme|@utility|@variant|@import\s+["']tailwindcss["']/
+const SKIP_DIRS = new Set([
+  '.git',
+  'node_modules',
+  '.next',
+  '.nuxt',
+  '.svelte-kit',
+  'dist',
+  'build',
+  'coverage'
+])
 
 function fail(message) {
   process.stderr.write(`${message}\n`)
@@ -58,7 +96,7 @@ function parseArgs(argv) {
   return {
     workspace: path.resolve(workspace),
     code,
-    discoverOnly,
+    discoverOnly
   }
 }
 
@@ -86,7 +124,7 @@ function runCommand(command, args, cwd) {
       resolve({
         code,
         stdout: Buffer.concat(stdout),
-        stderr: Buffer.concat(stderr).toString('utf8'),
+        stderr: Buffer.concat(stderr).toString('utf8')
       })
     })
   })
@@ -148,7 +186,8 @@ function discoverFilesWithNode(workspace, excludes) {
         if (entry.isDirectory()) continue
       }
 
-      const relativePath = relativeDir === '.' ? entry.name : path.posix.join(relativeDir, entry.name)
+      const relativePath =
+        relativeDir === '.' ? entry.name : path.posix.join(relativeDir, entry.name)
       if (isExcluded(relativePath, excludes)) continue
 
       if (entry.isDirectory()) {
@@ -184,6 +223,7 @@ async function run() {
   }
 
   if (files.length === 0) {
+    // No Tailwind files found — skip diagnostics helper, nothing to check.
     process.stdout.write('[]\n')
     return
   }
