@@ -21,6 +21,8 @@ This skill fixes them inside the agent session, on demand or automatically after
 
 It opens a real LSP session, collects diagnostics, and replaces only the flagged tokens — no regex guessing.
 
+![activation flow](assets/tailwind-intellisense-fixer-flow.svg)
+
 ---
 
 ## Installation

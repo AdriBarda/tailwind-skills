@@ -1,35 +1,68 @@
-<svg width="900" height="640" viewBox="0 0 900 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">tailwind-intellisense-fixer flow</title>
-  <desc id="desc">Simple vertical flow for edit, validate, and fix.</desc>
+<svg width="900" height="700" viewBox="0 0 900 700" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">tailwind-intellisense-fixer activation flow</title>
+  <desc id="desc">Three trigger cases converging into LSP diagnostics, fix, confirm, and report.</desc>
 
-  <rect width="900" height="640" rx="24" fill="#FFFFFF"/>
+  <rect width="900" height="700" rx="16" fill="#FFFFFF"/>
 
-  <rect x="24" y="24" width="852" height="592" rx="20" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="22" font-weight="700" fill="#111827">tailwind-intellisense-fixer</text>
+  <text x="450" y="62" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="14" fill="#6B7280">activation flow</text>
 
-  <text x="56" y="76" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">tailwind-intellisense-fixer</text>
-  <text x="56" y="106" fill="#4B5563" font-family="Arial, Helvetica, sans-serif" font-size="17">Use live Tailwind diagnostics. Fix only confirmed warnings.</text>
+  <!-- Case 1 -->
+  <rect x="24" y="82" width="264" height="116" rx="12" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1.5"/>
+  <text x="156" y="110" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="13" font-weight="700" fill="#1D4ED8">Case 1 — explicit command</text>
+  <text x="156" y="132" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#374151">/tailwind-intellisense-fixer</text>
+  <text x="156" y="154" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#374151">→ full repo scan</text>
+  <text x="156" y="176" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="11" fill="#6B7280">all Tailwind-bearing files</text>
 
-  <rect x="56" y="146" width="788" height="108" rx="16" fill="#F9FAFB" stroke="#D1D5DB"/>
-  <circle cx="108" cy="200" r="24" fill="#E5E7EB" stroke="#9CA3AF"/>
-  <text x="100" y="208" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">1</text>
-  <text x="154" y="188" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Edit</text>
-  <text x="154" y="220" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="19">Agent changes Tailwind component or class string.</text>
+  <!-- Case 2 -->
+  <rect x="318" y="82" width="264" height="116" rx="12" fill="#FFF7ED" stroke="#FED7AA" stroke-width="1.5"/>
+  <text x="450" y="110" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="13" font-weight="700" fill="#C2410C">Case 2 — warning request</text>
+  <text x="450" y="132" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#374151">"fix my canonical warnings"</text>
+  <text x="450" y="154" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#374151">→ targeted run</text>
+  <text x="450" y="176" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="11" fill="#6B7280">relevant files only</text>
 
-  <path d="M450 270V302" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
-  <path d="M450 312L442 300H458L450 312Z" fill="#9CA3AF"/>
+  <!-- Case 3 -->
+  <rect x="612" y="82" width="264" height="116" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5"/>
+  <text x="744" y="110" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="13" font-weight="700" fill="#15803D">Case 3 — post-write</text>
+  <text x="744" y="132" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#374151">agent wrote Tailwind files</text>
+  <text x="744" y="154" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#374151">→ silent background check</text>
+  <text x="744" y="176" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="11" fill="#6B7280">touched files only</text>
 
-  <rect x="56" y="334" width="788" height="108" rx="16" fill="#F9FAFB" stroke="#D1D5DB"/>
-  <circle cx="108" cy="388" r="24" fill="#E5E7EB" stroke="#9CA3AF"/>
-  <text x="100" y="396" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">2</text>
-  <text x="154" y="376" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Validate</text>
-  <text x="154" y="408" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="19">Helper runs Tailwind language server on touched files.</text>
+  <!-- Merge: verticals + horizontal + arrow -->
+  <line x1="156" y1="198" x2="156" y2="230" stroke="#9CA3AF" stroke-width="1.5"/>
+  <line x1="450" y1="198" x2="450" y2="230" stroke="#9CA3AF" stroke-width="1.5"/>
+  <line x1="744" y1="198" x2="744" y2="230" stroke="#9CA3AF" stroke-width="1.5"/>
+  <line x1="156" y1="230" x2="744" y2="230" stroke="#9CA3AF" stroke-width="1.5"/>
+  <line x1="450" y1="230" x2="450" y2="252" stroke="#9CA3AF" stroke-width="1.5"/>
+  <polygon points="443,251 457,251 450,263" fill="#9CA3AF"/>
 
-  <path d="M450 458V490" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
-  <path d="M450 500L442 488H458L450 500Z" fill="#9CA3AF"/>
+  <!-- Step 1: Run LSP -->
+  <rect x="190" y="263" width="520" height="76" rx="12" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1.5"/>
+  <text x="450" y="293" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Run @tailwindcss/language-server</text>
+  <text x="450" y="317" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#6B7280">spawned via npx · pnpm dlx · yarn dlx · bunx</text>
 
-  <rect x="56" y="522" width="788" height="72" rx="16" fill="#F9FAFB" stroke="#D1D5DB"/>
-  <circle cx="108" cy="558" r="24" fill="#E5E7EB" stroke="#9CA3AF"/>
-  <text x="100" y="566" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">3</text>
-  <text x="154" y="550" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Fix</text>
-  <text x="154" y="578" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="19">Apply only confirmed canonical-class warnings.</text>
+  <line x1="450" y1="339" x2="450" y2="361" stroke="#9CA3AF" stroke-width="1.5"/>
+  <polygon points="443,360 457,360 450,372" fill="#9CA3AF"/>
+
+  <!-- Step 2: Fix -->
+  <rect x="190" y="372" width="520" height="76" rx="12" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1.5"/>
+  <text x="450" y="402" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Collect diagnostics → replace flagged tokens</text>
+  <text x="450" y="426" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#6B7280">exact LSP position · no regex · no reformatting</text>
+
+  <line x1="450" y1="448" x2="450" y2="470" stroke="#9CA3AF" stroke-width="1.5"/>
+  <polygon points="443,469 457,469 450,481" fill="#9CA3AF"/>
+
+  <!-- Step 3: Confirm -->
+  <rect x="190" y="481" width="520" height="76" rx="12" fill="#F9FAFB" stroke="#D1D5DB" stroke-width="1.5"/>
+  <text x="450" y="511" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="14" font-weight="700" fill="#111827">Re-run once to confirm</text>
+  <text x="450" y="535" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#6B7280">warnings remain after one pass → report, don't retry</text>
+
+  <line x1="450" y1="557" x2="450" y2="579" stroke="#9CA3AF" stroke-width="1.5"/>
+  <polygon points="443,578 457,578 450,590" fill="#9CA3AF"/>
+
+  <!-- Step 4: Report -->
+  <rect x="190" y="590" width="520" height="76" rx="12" fill="#F0FDF4" stroke="#BBF7D0" stroke-width="1.5"/>
+  <text x="450" y="620" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="14" font-weight="700" fill="#15803D">Tailwind: fixed N warnings in M files.</text>
+  <text x="450" y="644" text-anchor="middle" font-family="system-ui, Arial, sans-serif" font-size="12" fill="#6B7280">or: 0 warnings · warnings remain · LS unavailable</text>
 </svg>
