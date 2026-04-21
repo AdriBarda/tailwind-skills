@@ -10,9 +10,6 @@ description: >
   files contain Tailwind class strings or directives. Do not activate for
   general Tailwind how-to questions, read-only analysis, non-Tailwind projects,
   or frontend work that did not touch Tailwind-bearing code.
-metadata:
-  version: 0.5.0
-  license: MIT
 ---
 
 # Tailwind IntelliSense Fixer

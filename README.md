@@ -1,6 +1,5 @@
 # tailwind-skills
 
-![version](https://img.shields.io/badge/version-0.5.0-blue)
 ![status](https://img.shields.io/badge/status-experimental-orange)
 ![license](https://img.shields.io/badge/license-MIT-green)
 ![node](https://img.shields.io/badge/requires-Node.js-brightgreen)
