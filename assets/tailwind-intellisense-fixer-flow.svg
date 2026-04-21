@@ -1,0 +1,35 @@
+<svg width="900" height="640" viewBox="0 0 900 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">tailwind-intellisense-fixer flow</title>
+  <desc id="desc">Simple vertical flow for edit, validate, and fix.</desc>
+
+  <rect width="900" height="640" rx="24" fill="#FFFFFF"/>
+
+  <rect x="24" y="24" width="852" height="592" rx="20" fill="#FFFFFF" stroke="#E5E7EB"/>
+
+  <text x="56" y="76" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700">tailwind-intellisense-fixer</text>
+  <text x="56" y="106" fill="#4B5563" font-family="Arial, Helvetica, sans-serif" font-size="17">Use live Tailwind diagnostics. Fix only confirmed warnings.</text>
+
+  <rect x="56" y="146" width="788" height="108" rx="16" fill="#F9FAFB" stroke="#D1D5DB"/>
+  <circle cx="108" cy="200" r="24" fill="#E5E7EB" stroke="#9CA3AF"/>
+  <text x="100" y="208" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">1</text>
+  <text x="154" y="188" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Edit</text>
+  <text x="154" y="220" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="19">Agent changes Tailwind component or class string.</text>
+
+  <path d="M450 270V302" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M450 312L442 300H458L450 312Z" fill="#9CA3AF"/>
+
+  <rect x="56" y="334" width="788" height="108" rx="16" fill="#F9FAFB" stroke="#D1D5DB"/>
+  <circle cx="108" cy="388" r="24" fill="#E5E7EB" stroke="#9CA3AF"/>
+  <text x="100" y="396" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">2</text>
+  <text x="154" y="376" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Validate</text>
+  <text x="154" y="408" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="19">Helper runs Tailwind language server on touched files.</text>
+
+  <path d="M450 458V490" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M450 500L442 488H458L450 500Z" fill="#9CA3AF"/>
+
+  <rect x="56" y="522" width="788" height="72" rx="16" fill="#F9FAFB" stroke="#D1D5DB"/>
+  <circle cx="108" cy="558" r="24" fill="#E5E7EB" stroke="#9CA3AF"/>
+  <text x="100" y="566" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">3</text>
+  <text x="154" y="550" fill="#111827" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700">Fix</text>
+  <text x="154" y="578" fill="#374151" font-family="Arial, Helvetica, sans-serif" font-size="19">Apply only confirmed canonical-class warnings.</text>
+</svg>
