@@ -1,8 +1,16 @@
-# tailwind-skills
+<div align="center">
 
-![status](https://img.shields.io/badge/status-experimental-orange)
-![license](https://img.shields.io/badge/license-MIT-green)
-![node](https://img.shields.io/badge/requires-Node.js-brightgreen)
+<h1>tailwind-skills</h1>
+
+<p><strong>Tailwind CSS agent skills</strong></p>
+
+<p>
+  <img src="https://img.shields.io/badge/status-experimental-orange" alt="status" />
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="license" />
+  <img src="https://img.shields.io/badge/requires-Node.js-brightgreen" alt="node" />
+</p>
+
+</div>
 
 A collection of skills for Tailwind CSS — fixes canonical class warnings using the live language server, maybe more Tailwind tooling to come.
 
@@ -37,14 +45,17 @@ The skill requires `@tailwindcss/language-server` to be resolvable by your proje
 ## How it activates
 
 ### Case 1 — explicit command
+
 Invoke `/tailwind-intellisense-fixer` directly (with or without trailing text).  
 → Full repo scan across all Tailwind-bearing files.
 
 ### Case 2 — warning remediation request
+
 Tell your agent you're seeing canonical class warnings or ask it to fix them.  
 → Targeted diagnostics run, warnings fixed, final status reported.
 
 ### Case 3 — post-write background check
+
 Agent just wrote or edited files in a Tailwind CSS project.  
 → Automatically checks only the touched files and appends a one-line status footer.
 
@@ -93,12 +104,12 @@ skills/tailwind-intellisense-fixer/
 
 ## Requirements
 
-| Requirement | Notes |
-| --- | --- |
-| Node.js | Any version that supports ESM (`node:` imports) |
-| Package manager | npm, pnpm, yarn, or bun — used to resolve the language server |
-| `@tailwindcss/language-server` | Resolved on demand, not required in `dependencies` |
-| Tailwind CSS project | Must have `tailwindcss` in `package.json`, a `tailwind.config.*`, or `@import "tailwindcss"` in CSS |
+| Requirement                    | Notes                                                                                               |
+| ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Node.js                        | Any version that supports ESM (`node:` imports)                                                     |
+| Package manager                | npm, pnpm, yarn, or bun — used to resolve the language server                                       |
+| `@tailwindcss/language-server` | Resolved on demand, not required in `dependencies`                                                  |
+| Tailwind CSS project           | Must have `tailwindcss` in `package.json`, a `tailwind.config.*`, or `@import "tailwindcss"` in CSS |
 
 ---
 
